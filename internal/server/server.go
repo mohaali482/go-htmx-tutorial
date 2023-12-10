@@ -14,13 +14,15 @@ type FiberServer struct {
 
 func New() *FiberServer {
 	engine := django.New("./internal/templates", ".html")
+	app := fiber.New(
+		fiber.Config{
+			Views: engine,
+		},
+	)
+	app.Static("/static", "./static")
 	server := &FiberServer{
-		App: fiber.New(
-			fiber.Config{
-				Views: engine,
-			},
-		),
-		db: database.New(),
+		App: app,
+		db:  database.New(),
 	}
 
 	return server
