@@ -1,0 +1,16 @@
+<div id="counter-{{count.Id}}">
+  <p>Current count: {{ count.Value }}</p>
+  <button hx-post="/increment/{{count.Id}}/" hx-target="#counter-{{count.Id}}">
+    +
+  </button>
+  <button hx-post="/decrement/{{count.Id}}/" hx-target="#counter-{{count.Id}}">
+    -
+  </button>
+  <button
+    hx-delete="/delete/{{count.Id}}"
+    hx-target="#counter-{{count.Id}}"
+    hx-swap="delete"
+  >
+    Delete
+  </button>
+</div>
