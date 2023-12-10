@@ -4,7 +4,63 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <script src="/static/js/htmx.min.js"></script>
+    <script src="https://unpkg.com/htmx.org/dist/ext/multi-swap.js"></script>
+    <title>Counter</title>
   </head>
-  <body></body>
+  <body>
+    <div id="counter-list">
+      <h1>Counts</h1>
+      {% for count in counts %}
+      <div id="counter-{{count.Id}}">
+        <p>Current count: {{ count.Value }}</p>
+        <button
+          hx-post="/increment/{{count.Id}}/"
+          hx-target="#counter-{{count.Id}}"
+        >
+          +
+        </button>
+        <button
+          hx-post="/decrement/{{count.Id}}/"
+          hx-target="#counter-{{count.Id}}"
+        >
+          -
+        </button>
+        <button
+          hx-delete="/delete/{{count.Id}}"
+          hx-target="#counter-{{count.Id}}"
+          hx-swap="delete"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+    {% endfor %}
+    <button
+      hx-post="/create"
+      hx-target="#counter-list"
+      hx-swap="beforeend transition:true"
+    >
+      New Count
+    </button>
+
+    <div>
+      <button hx-get="/example" hx-swap="multi:#id1,#id2">
+        Click to swap #id1 and #id2 content
+      </button>
+
+      <!-- advanced example how to swap multiple elements from /example by different swap methods -->
+      <a
+        href="/example"
+        hx-swap="multi:#id1,#id2:outerHTML,#id3:beforeend,#id4:delete"
+        >Click to swap #id1 and #id2, extend #id3 content and delete #id4
+        element</a
+      >
+
+      <div id="id1">Old 1 content</div>
+      <div id="id2">Old 2 content</div>
+      <div id="id3">Old 3 content</div>
+      <div id="id4">Old 4 content</div>
+    </div>
+  </body>
 </html>
